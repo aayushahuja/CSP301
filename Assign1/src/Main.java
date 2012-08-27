@@ -28,7 +28,7 @@ import prefuse.visual.EdgeItem;
 import prefuse.visual.NodeItem;
 import prefuse.visual.VisualItem;
 
-public class PolBooks {
+public class Main {
 	
 	static BufferedWriter out1;
 	static BufferedWriter out2;
@@ -52,20 +52,39 @@ public class PolBooks {
 			System.out.println(e);
 			
 		}
+		Graph graphToVisualize;
+		graphToVisualize = new Graph();
+		try{
+			graphToVisualize =  GraphParser.loadGraph(new File("data/polbooks.gml"));	
+		}
+		catch(Exception ex ){
+			System.out.println("Error Reading From File polbooks.gml");
+			System.out.println(ex);
+		}
+		Visualize gd = new Visualize(graphToVisualize);
+		Analyse an = new Analyse();
+		an.evaluate(graphToVisualize);
+		out1.write(an.getratio()+ "\n");
+		out2.write(an.gettriads()+ "\n");
+		out3.write(an.difftriads()+ "\n");
 		
-		Graphsdata gd = new Graphsdata(false);
-		out1.write(gd.getratio()+ "\n");
-		out2.write(gd.gettriads()+ "\n");
-		out3.write(gd.difftriads()+ "\n");
-		
-		
-		
+		try {
+		Graph g = new Graph();
 		for(int i = 0;i < 30; i++){
-			out1.write(new Graphsdata(true).getratio() + "\n");
-			out2.write(new Graphsdata(true).gettriads()+ "\n");
-			out3.write(new Graphsdata(true).difftriads()+ "\n");
+			g = GraphParser.loadGraph(new File("data/polbooks.gml"));
+			g = an.makeRandomGraph(g);
+			an.evaluate(g);
+			out1.write(an.getratio() + "\n");
+			out2.write(an.gettriads()+ "\n");
+			out3.write(an.difftriads()+ "\n");
 			
 		}
+		//Visualize gd2 = new Visualize(g);
+		} catch (DataIOException e) {
+			System.out.println("Error Reading From File polbooks.gml");
+			System.out.println(e);
+		}
+	
 		out1.close();
 		out2.close();
 		out3.close();
