@@ -78,8 +78,10 @@ public class Visualize {
 			vis.putAction("layout",layout);
 	
 			Display d = new Display(vis);
+			int width=720, height=480;
 			d.setBackground(Color.DARK_GRAY);
-			d.setSize(720,480);
+			d.setSize(width,height);
+			d.pan(width/2.0, height/2.0);
 			d.addControlListener(new DragControl());
 			d.addControlListener(new PanControl());
 			d.addControlListener(new ZoomControl());
