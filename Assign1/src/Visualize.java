@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.Action;
 import javax.swing.JFrame;
 
 import prefuse.Constants;
@@ -15,15 +16,16 @@ import prefuse.Display;
 import prefuse.Visualization;
 import prefuse.action.ActionList;
 import prefuse.action.RepaintAction;
+import prefuse.action.assignment.SizeAction;
 import prefuse.action.assignment.DataColorAction;
 import prefuse.action.assignment.DataShapeAction;
 import prefuse.action.layout.graph.ForceDirectedLayout;
 import prefuse.activity.Activity;
 import prefuse.controls.DragControl;
 import prefuse.controls.FocusControl;
-import prefuse.controls.NeighborHighlightControl;
 import prefuse.controls.PanControl;
 import prefuse.controls.ZoomControl;
+import prefuse.controls.HoverActionControl;
 import prefuse.data.Edge;
 import prefuse.data.Graph;
 import prefuse.data.Node;
@@ -68,15 +70,21 @@ public class Visualize {
 			color.add(edgecolor);
 			//	color.add(text);
 			color.add(shape);
-	
+			
 			ActionList layout = new ActionList(Activity.INFINITY);
 			//Force DIrected Layout
 			layout.add(new ForceDirectedLayout("graph"));
 			layout.add(new RepaintAction());
 	
+			SizeAction highl=new SizeAction("graph.nodes",1.0);
+			highl.add("_hover",2.0);
+			
+			ActionList highlight_neighbors=new ActionList();
+			highlight_neighbors.add(highl);
+			vis.putAction("highlight_neighbors", highlight_neighbors);
 			vis.putAction("color",color);
 			vis.putAction("layout",layout);
-	
+
 			Display d = new Display(vis);
 			int width=720, height=480;
 			d.setBackground(Color.DARK_GRAY);
@@ -85,8 +93,11 @@ public class Visualize {
 			d.addControlListener(new DragControl());
 			d.addControlListener(new PanControl());
 			d.addControlListener(new ZoomControl());
+			//Action hoveracction=new Action();
+			//HoverActionControl hover=new HoverActionControl();
+			d.addControlListener(new HoverActionControl("highlight_neighbors"));
 			//Adding custom control to display pop ups
-			//d.addControlListener(new CustomControl());
+			d.addControlListener(new CustomControl());
 	
 			JFrame frame = new JFrame();
 			frame.add(d);
@@ -99,3 +110,4 @@ public class Visualize {
 		}
 			
 	}
+
