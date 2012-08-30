@@ -50,7 +50,7 @@ public class Visualize {
 	
 	//constructor
 	public Visualize(Graph graph){
-		UILib.setPlatformLookAndFeel();
+		//UILib.setPlatformLookAndFeel();
 			final Visualization vis = new Visualization();
 			vis.addGraph("graph",graph);
 			//vis.setInteractive("graph.edges",null,false);
@@ -78,21 +78,23 @@ public class Visualize {
 			int[] shapes = new int[]{Constants.SHAPE_RECTANGLE,Constants.SHAPE_ELLIPSE,Constants.SHAPE_TRIANGLE_UP};
 			
 			//the following is used to separate the graph.nodes based on their values and colour them accordingly
-			DataColorAction fill = new DataColorAction("graph.nodes", "value", Constants.NOMINAL, VisualItem.FILLCOLOR, palette);
+			DataColorAction nodeColour = new DataColorAction("graph.nodes", "value", Constants.NOMINAL, VisualItem.FILLCOLOR, palette);
 			//ColorAction edges = new ColorAction("graph.edges",VisualItem.STROKECOLOR,ColorLib.gray(105));
 			//ColorAction text = new ColorAction("graph.nodes",VisualItem.TEXTCOLOR,ColorLib.gray(5));
 			DataShapeAction shape = new DataShapeAction("graph.nodes","value",shapes);
 			DataColorAction edgecolor = new DataColorAction("graph.edges","type",Constants.NOMINAL,VisualItem.STROKECOLOR,palette1);
-			 fill.add(VisualItem.FIXED, ColorLib.rgb(255,100,100));
-		     fill.add(VisualItem.HIGHLIGHT, ColorLib.rgb(255,200,125));
-			
+			//fill.add(VisualItem.HIGHLIGHT, ColorLib.rgb(0,200,125));
 			//datacolour action is used to selectively add while colouraction is used to all
-			int hops = 30;
-	        final GraphDistanceFilter filter = new GraphDistanceFilter("graph", hops);
+			//int hops = 30;
+	        //final GraphDistanceFilter filter = new GraphDistanceFilter("graph", hops);
+			nodeColour.add(VisualItem.FIXED, ColorLib.rgb(255,100,100));
+	        nodeColour.add(VisualItem.HIGHLIGHT, ColorLib.rgb(255,200,125));
 	        
 			//action list binds all the data colour action , so we create actionlists and add to them
 			ActionList color = new ActionList();			
-			color.add(fill);
+			color.add(nodeColour);
+			//color.add(new ColorAction("graph.nodes", VisualItem.FIXED, ColorLib.rgb(0,0,0)));
+			//color.add(new ColorAction("graph.nodes", VisualItem.HIGHLIGHT, ColorLib.rgb(5,0,0)));
 			color.add(edgecolor);
 			//	color.add(text);
 			color.add(shape);
@@ -102,6 +104,7 @@ public class Visualize {
 			ActionList layout = new ActionList(Activity.INFINITY);
 			//this actionlist will run indefinitely
 			//Force DIrected Layout
+			layout.add(nodeColour);
 			layout.add(new ForceDirectedLayout("graph"));
 			layout.add(new RepaintAction());
 			//layout.add(filter);
@@ -111,14 +114,17 @@ public class Visualize {
 			
 			ActionList highlight_neighbors=new ActionList();
 			highlight_neighbors.add(highl);
-			highlight_neighbors.add(filter);
+			//highlight_neighbors.add(filter);
+			
+			
+			// ---------------- Adding actionlists to the visualization
 			vis.putAction("highlight_neighbors", highlight_neighbors);
 			vis.putAction("color",color);
 			vis.putAction("layout",layout);
 
 			Display d = new Display(vis); // so display is bigger than visualization
 			int width=720, height=480;
-			d.setBackground(Color.DARK_GRAY);
+			d.setBackground(Color.WHITE);
 			d.setSize(width,height);
 			d.pan(width/2.0, height/2.0);
 			d.addControlListener(new DragControl());
@@ -126,8 +132,8 @@ public class Visualize {
 			d.addControlListener(new PanControl());
 			d.addControlListener(new ZoomControl());
 			d.addControlListener(new NeighborHighlightControl());
-			//Action hoveracction=new Action();
-			//HoverActionControl hover=new HoverActionControl();
+		//	Action hoveracction=new Action();
+		//	HoverActionControl hover=new HoverActionControl();
 			d.addControlListener(new HoverActionControl("highlight_neighbors"));
 			//Adding custom control to display pop ups
 			d.addControlListener(new CustomControl());
