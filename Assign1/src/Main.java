@@ -58,11 +58,12 @@ public class Main {
 		Graph graphToVisualize;
 		graphToVisualize = new Graph();
 		try{
-			graphToVisualize =  GraphParser.loadGraph(new File("data/polbooks.gml"));	
+			graphToVisualize =  GraphParser.loadGraph(args[0]);	
 		}
 		catch(Exception ex ){
-			System.out.println("Error Reading From File polbooks.gml");
-			System.out.println(ex);
+			System.err.println("Error Reading From File " + args[0]);
+			ex.printStackTrace();
+			System.exit(1);
 		}
 		Visualize gd = new Visualize(graphToVisualize);
 		Analyse an = new Analyse();
@@ -74,7 +75,7 @@ public class Main {
 		try {
 		Graph g = new Graph();
 		for(int i = 0;i < 30; i++){
-			g = GraphParser.loadGraph(new File("data/polbooks.gml"));
+			g = GraphParser.loadGraph(args[0]);
 			g = an.makeRandomGraph(g);
 			an.evaluate(g);
 			out1.write(an.getratio() + "\n");
@@ -84,7 +85,7 @@ public class Main {
 		}
 		//Visualize gd2 = new Visualize(g);
 		} catch (DataIOException e) {
-			System.out.println("Error Reading From File polbooks.gml");
+			System.out.println("Error Reading From File "+args[0]);
 			System.out.println(e);
 		}
 	

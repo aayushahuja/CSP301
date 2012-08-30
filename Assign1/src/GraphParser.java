@@ -12,16 +12,22 @@ import prefuse.data.io.DataIOException;
 
 
 public class GraphParser {
-	public static Graph loadGraph(File f) throws DataIOException, IOException{
+	public static Graph loadGraph(String filename) throws DataIOException, IOException{
+		File f=new File("data/"+filename);
 		//Generates a Graph for The gml file(File Specific)
 		Table nodeData = new Table();
 		Table edgeData = new Table();
 		nodeData.addColumn("id", String.class);
 		nodeData.addColumn("label", String.class);
 		nodeData.addColumn("value", String.class);
+		if(filename.equals("polblogs.gml")) {
+			nodeData.addColumn("source", String.class);
+		}
 		edgeData.addColumn(Graph.DEFAULT_SOURCE_KEY,int.class);
 		edgeData.addColumn(Graph.DEFAULT_TARGET_KEY,int.class);
-		edgeData.addColumn("type",String.class);
+		if(filename.equals("polbooks.gml")) {
+			edgeData.addColumn("type",String.class);
+		}
 		BufferedReader br = null;
 		Graph g = null ;
 		String s;
@@ -77,14 +83,15 @@ public class GraphParser {
 				}
 				Edge e1 = g.getEdge(g.addEdge(source, target))	;
 				//Adding Type of edge data
-				if (g.getNode(source).get("value").equals(g.getNode(target).get("value"))){
-					e1.set("type", "same");
-				}
-				else{
-					e1.set("type","cross");
+				if(filename.equals("polbooks.gml")) {
+					if (g.getNode(source).get("value").equals(g.getNode(target).get("value"))){
+						e1.set("type", "same");
+					}
+					else{
+						e1.set("type","cross");
+					}
 				}
 			}
-
 
 		}
 

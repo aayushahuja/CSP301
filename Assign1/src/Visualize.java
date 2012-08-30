@@ -86,7 +86,7 @@ public class Visualize {
 			//ColorAction edges = new ColorAction("graph.edges",VisualItem.STROKECOLOR,ColorLib.gray(105));
 			//ColorAction text = new ColorAction("graph.nodes",VisualItem.TEXTCOLOR,ColorLib.gray(5));
 			DataShapeAction shape = new DataShapeAction("graph.nodes","value",shapes);
-			DataColorAction edgecolor = new DataColorAction("graph.edges","type",Constants.NOMINAL,VisualItem.STROKECOLOR,palette1);
+			//DataColorAction edgecolor = new DataColorAction("graph.edges","type",Constants.NOMINAL,VisualItem.STROKECOLOR,palette1);
 			//fill.add(VisualItem.HIGHLIGHT, ColorLib.rgb(0,200,125));
 			//datacolour action is used to selectively add while colouraction is used to all
 			//int hops = 30;
@@ -101,11 +101,14 @@ public class Visualize {
 			color.add(nodeColour);
 			//color.add(new ColorAction("graph.nodes", VisualItem.FIXED, ColorLib.rgb(0,0,0)));
 			//color.add(new ColorAction("graph.nodes", VisualItem.HIGHLIGHT, ColorLib.rgb(5,0,0)));
-			color.add(edgecolor);
+			//color.add(edgecolor);
 			//	color.add(text);
 			color.add(shape);
 			color.add(new RepaintAction());
 //			color.add(filter);
+		        color.add(new ColorAction("graph.edges", VisualItem.FILLCOLOR, ColorLib.gray(200)));
+		        color.add(new ColorAction("graph.edges", VisualItem.STROKECOLOR, ColorLib.gray(200)));
+
 
 			ActionList layout = new ActionList(Activity.INFINITY);
 			//this actionlist will run indefinitely
@@ -115,22 +118,22 @@ public class Visualize {
 			layout.add(new RepaintAction());
 			//layout.add(filter);
 
-			SizeAction highl=new SizeAction("graph.nodes",1.0);
-			highl.add("_hover",3.0);
+			SizeAction enlarge=new SizeAction("graph.nodes",1.0);
+			enlarge.add("_hover",3.0);
 
-			ActionList highlight_neighbors=new ActionList();
-			highlight_neighbors.add(highl);
+			ActionList hover=new ActionList();
+			hover.add(enlarge);
 			//highlight_neighbors.add(filter);
 
 
 			// ---------------- Adding actionlists to the visualization
-			vis.putAction("highlight_neighbors", highlight_neighbors);
+			vis.putAction("hover", hover);
 			vis.putAction("color",color);
 			vis.putAction("layout",layout);
 
 			Display d = new Display(vis); // so display is bigger than visualization
-			int width=720, height=480;
-			d.setBackground(Color.GRAY);
+			int width=1200, height=800;
+			d.setBackground(Color.WHITE);
 			d.setSize(width,height);
 			d.pan(width/2.0, height/2.0);
 			d.addControlListener(new DragControl());
@@ -140,7 +143,7 @@ public class Visualize {
 			d.addControlListener(new NeighborHighlightControl());
 		//	Action hoveracction=new Action();
 		//	HoverActionControl hover=new HoverActionControl();
-			d.addControlListener(new HoverActionControl("highlight_neighbors"));
+			d.addControlListener(new HoverActionControl("hover"));
 			//Adding custom control to display pop ups
 			d.addControlListener(new CustomControl());
 
