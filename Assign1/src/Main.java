@@ -74,11 +74,11 @@ public class Main {
 		an.evaluate(graphToVisualize);
 		int node_count1 = graphToVisualize.getNodeCount();
 		double denom1 = (node_count1*(node_count1  - 1))/2.0;
-		String triads1 = an.difftriads();
+		String triads1 = an.gettriads();
 		double cluster_ratio1 = (Integer.parseInt(triads1))/denom1;
 		out1.write(an.getratio()+ "\n");
-		out2.write(an.gettriads() + "\n");
-		out3.write(triads1 + "\n");
+		out2.write(triads1 + "\n");
+		out3.write(an.difftriads() + "\n");
 		out4.write(cluster_ratio1 + "\n");
 		
 		
@@ -91,11 +91,11 @@ public class Main {
 			an.evaluate(g);
 			int node_count2 = g.getNodeCount();
 			double denom = (node_count2*(node_count2  - 1))/2.0;
-			String triads = an.difftriads();
+			String triads = an.gettriads();
 			double cluster_ratio = (Integer.parseInt(triads))/denom;
 			out1.write(an.getratio() + "\n");
-			out2.write(an.gettriads() + "\n");
-			out3.write(triads + "\n");
+			out2.write(triads + "\n");
+			out3.write(an.difftriads() + "\n");
 			out4.write(cluster_ratio + "\n");
 			
 		}
