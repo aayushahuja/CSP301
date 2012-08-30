@@ -18,7 +18,7 @@ public class CustomControl extends ControlAdapter implements Control {
 	            JPopupMenu jpub = new JPopupMenu();
 	            jpub.add("Title: " + title);
 	            jpub.add("Value: " + value);
-	            jpub.show(e.getComponent(),(int) item.getX(),(int) item.getY());
+	            jpub.show(e.getComponent(),10,10);
 	        }
 	        if(item instanceof EdgeItem)
 	        {
@@ -26,7 +26,7 @@ public class CustomControl extends ControlAdapter implements Control {
 	            String type = (String)item.get("type");
 	        	JPopupMenu jpub = new JPopupMenu();
 	            jpub.add("Type of edge: " + type);
-	            jpub.show(e.getComponent(),(int) item.getX(),(int) item.getY());
+	            jpub.show(e.getComponent(),10,10);
 	        }
 	    }
 	}

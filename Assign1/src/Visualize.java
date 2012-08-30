@@ -47,7 +47,7 @@ import prefuse.visual.VisualItem;
 
 
 public class Visualize {
-	
+
 	//constructor
 	public Visualize(Graph graph){
 		//UILib.setPlatformLookAndFeel();
@@ -66,17 +66,21 @@ public class Visualize {
 	     //   defaultRenderer.add("label",tr);
 			vis.setRendererFactory(defaultRenderer);
 		//	vis.setRendererFactory(new DefaultRendererFactory(tr));
-	
 
-				
+
+
 			//Different Colored nodes for different value fields
-			int[] palette = new int[]{ColorLib.rgb(180, 0, 0),ColorLib.rgb(0, 180, 0),ColorLib.rgb(0, 0, 180)};
+			int[] palette = new int[]{ColorLib.rgb(150, 100, 100),ColorLib.rgb(100, 150, 100),ColorLib.rgb(100, 100, 150)};
+			int[] hoverPalette = new int[]{ColorLib.rgb(200, 0, 0),ColorLib.rgb(0, 200, 0),ColorLib.rgb(0, 0, 200)};
+			//ColorLib.rgb(180, 0, 0),ColorLib.rgb(0, 180, 0),ColorLib.rgb(0, 0, 180)
+			//ColorLib.rgb(150, 100, 100),ColorLib.rgb(100, 150, 100),ColorLib.rgb(100, 100, 150)
+			int[] neighbourPalette = new int[]{ColorLib.rgb(255, 0, 0),ColorLib.rgb(0, 255, 0),ColorLib.rgb(0, 0, 255)};
 			//Different colored edges
-			int[] palette1 = new int[]{ColorLib.gray(180),ColorLib.gray(5)};
-			
+			int[] palette1 = new int[]{ColorLib.gray(50),ColorLib.gray(100)};
+
 			//	Different Shapes for different value fields
 			int[] shapes = new int[]{Constants.SHAPE_RECTANGLE,Constants.SHAPE_ELLIPSE,Constants.SHAPE_TRIANGLE_UP};
-			
+
 			//the following is used to separate the graph.nodes based on their values and colour them accordingly
 			DataColorAction nodeColour = new DataColorAction("graph.nodes", "value", Constants.NOMINAL, VisualItem.FILLCOLOR, palette);
 			//ColorAction edges = new ColorAction("graph.edges",VisualItem.STROKECOLOR,ColorLib.gray(105));
@@ -87,9 +91,11 @@ public class Visualize {
 			//datacolour action is used to selectively add while colouraction is used to all
 			//int hops = 30;
 	        //final GraphDistanceFilter filter = new GraphDistanceFilter("graph", hops);
-			nodeColour.add(VisualItem.FIXED, ColorLib.rgb(255,100,100));
-	        nodeColour.add(VisualItem.HIGHLIGHT, ColorLib.rgb(255,200,125));
-	        
+			//nodeColour.add(VisualItem.FIXED, ColorLib.rgb(255,100,100));
+			nodeColour.add(VisualItem.FIXED , new DataColorAction("graph.nodes", "value", Constants.NOMINAL, VisualItem.FILLCOLOR, hoverPalette));
+			nodeColour.add(VisualItem.HIGHLIGHT , new DataColorAction("graph.nodes", "value", Constants.NOMINAL, VisualItem.FILLCOLOR, neighbourPalette));
+	        //nodeColour.add(VisualItem.HIGHLIGHT, ColorLib.rgb(255,200,125));
+
 			//action list binds all the data colour action , so we create actionlists and add to them
 			ActionList color = new ActionList();			
 			color.add(nodeColour);
@@ -100,7 +106,7 @@ public class Visualize {
 			color.add(shape);
 			color.add(new RepaintAction());
 //			color.add(filter);
-			
+
 			ActionList layout = new ActionList(Activity.INFINITY);
 			//this actionlist will run indefinitely
 			//Force DIrected Layout
@@ -108,15 +114,15 @@ public class Visualize {
 			layout.add(new ForceDirectedLayout("graph"));
 			layout.add(new RepaintAction());
 			//layout.add(filter);
-	
+
 			SizeAction highl=new SizeAction("graph.nodes",1.0);
 			highl.add("_hover",3.0);
-			
+
 			ActionList highlight_neighbors=new ActionList();
 			highlight_neighbors.add(highl);
 			//highlight_neighbors.add(filter);
-			
-			
+
+
 			// ---------------- Adding actionlists to the visualization
 			vis.putAction("highlight_neighbors", highlight_neighbors);
 			vis.putAction("color",color);
@@ -124,7 +130,7 @@ public class Visualize {
 
 			Display d = new Display(vis); // so display is bigger than visualization
 			int width=720, height=480;
-			d.setBackground(Color.WHITE);
+			d.setBackground(Color.GRAY);
 			d.setSize(width,height);
 			d.pan(width/2.0, height/2.0);
 			d.addControlListener(new DragControl());
@@ -137,7 +143,7 @@ public class Visualize {
 			d.addControlListener(new HoverActionControl("highlight_neighbors"));
 			//Adding custom control to display pop ups
 			d.addControlListener(new CustomControl());
-	
+
 			JFrame frame = new JFrame();
 			frame.add(d);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -145,8 +151,7 @@ public class Visualize {
 			frame.setVisible(true);
 			vis.run("color");
 			vis.run("layout");
-	
-		}
-			
-	}
 
+		}
+
+	}
