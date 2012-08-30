@@ -28,6 +28,9 @@ import prefuse.visual.EdgeItem;
 import prefuse.visual.NodeItem;
 import prefuse.visual.VisualItem;
 
+/**
+ * @author PAKV
+ */
 public class Main {
 	
 	static BufferedWriter out1;
