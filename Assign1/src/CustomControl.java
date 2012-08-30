@@ -14,8 +14,10 @@ public class CustomControl extends ControlAdapter implements Control {
 	        if(item instanceof NodeItem)
 	        {
 	            String title = ((String) item.get("label"));
+	            String value = ((String) item.get("value"));
 	            JPopupMenu jpub = new JPopupMenu();
 	            jpub.add("Title: " + title);
+	            jpub.add("Value: " + value);
 	            jpub.show(e.getComponent(),(int) item.getX(),(int) item.getY());
 	        }
 	        if(item instanceof EdgeItem)
