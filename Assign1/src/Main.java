@@ -69,7 +69,7 @@ public class Main {
 			ex.printStackTrace();
 			System.exit(1);
 		}
-		Visualize gd = new Visualize(graphToVisualize);
+		
 		Analyse an = new Analyse();
 		an.evaluate(graphToVisualize);
 		int node_count1 = graphToVisualize.getNodeCount();
@@ -87,6 +87,10 @@ public class Main {
 		Graph g = new Graph();
 		for(int i = 0;i < 30; i++){
 			g = GraphParser.loadGraph(args[0]);
+			an.crossedges = 0.0;
+			an.difftriads = 0;
+			an.sameedges = 0;
+			an.triads = 0;
 			g = an.makeRandomGraph(g);
 			an.evaluate(g);
 			int node_count2 = g.getNodeCount();
@@ -110,7 +114,7 @@ public class Main {
 		out3.close();
 		out4.close();
 		
-		
+		Visualize gd = new Visualize(graphToVisualize);
 	}
 	
 	
