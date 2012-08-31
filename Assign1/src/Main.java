@@ -103,7 +103,7 @@ public class Main {
 			out4.write(cluster_ratio + "\n");
 			
 		}
-		//Visualize gd2 = new Visualize(g);
+		Visualize gd2 = new Visualize(g);
 		} catch (DataIOException e) {
 			System.out.println("Error Reading From File "+args[0]);
 			System.out.println(e);
@@ -115,6 +115,7 @@ public class Main {
 		out4.close();
 		
 		Visualize gd = new Visualize(graphToVisualize);
+
 	}
 	
 	
