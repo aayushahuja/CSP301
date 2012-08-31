@@ -22,12 +22,13 @@ public class GraphParser {
 		nodeData.addColumn("value", String.class);
 		if(filename.equals("polblogs.gml")) {
 			nodeData.addColumn("source", String.class);
+			nodeData.addColumn("size",int.class);
 		}
 		edgeData.addColumn(Graph.DEFAULT_SOURCE_KEY,int.class);
 		edgeData.addColumn(Graph.DEFAULT_TARGET_KEY,int.class);
-		if(filename.equals("polbooks.gml")) {
+		//if(filename.equals("polbooks.gml")) {
 			edgeData.addColumn("type",String.class);
-		}
+		//}
 		BufferedReader br = null;
 		Graph g = null ;
 		String s;
@@ -63,7 +64,9 @@ public class GraphParser {
 					n1.set(tokens1[0], tokens1[1]);
 				}
 				//System.out.println(n1);
-
+				if(filename.equals("polblogs.gml")) {
+					n1.set("size",1.0);
+				}
 			}
 			//Adding edge data
 
@@ -83,18 +86,20 @@ public class GraphParser {
 				}
 				Edge e1 = g.getEdge(g.addEdge(source, target))	;
 				//Adding Type of edge data
-				if(filename.equals("polbooks.gml")) {
+				//if(filename.equals("polbooks.gml")) {
 					if (g.getNode(source).get("value").equals(g.getNode(target).get("value"))){
 						e1.set("type", "same");
 					}
 					else{
 						e1.set("type","cross");
 					}
-				}
+				//}
 			}
 
 		}
 
+		//modify graph for polblogs
+		//g=Aggregate.combine_nodes(g);
 		return g;
 
 }}

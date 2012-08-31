@@ -22,6 +22,8 @@ import prefuse.action.assignment.DataColorAction;
 import prefuse.action.assignment.DataShapeAction;
 import prefuse.action.filter.GraphDistanceFilter;
 import prefuse.action.layout.graph.ForceDirectedLayout;
+//import prefuse.action.layout.CircleLayout;
+//import prefuse.action.layout.graph.TreeLayout;
 import prefuse.activity.Activity;
 import prefuse.controls.DragControl;
 import prefuse.controls.FocusControl;
@@ -86,7 +88,7 @@ public class Visualize {
 			//ColorAction edges = new ColorAction("graph.edges",VisualItem.STROKECOLOR,ColorLib.gray(105));
 			//ColorAction text = new ColorAction("graph.nodes",VisualItem.TEXTCOLOR,ColorLib.gray(5));
 			DataShapeAction shape = new DataShapeAction("graph.nodes","value",shapes);
-			//DataColorAction edgecolor = new DataColorAction("graph.edges","type",Constants.NOMINAL,VisualItem.STROKECOLOR,palette1);
+			DataColorAction edgecolor = new DataColorAction("graph.edges","type",Constants.NOMINAL,VisualItem.STROKECOLOR,palette1);
 			//fill.add(VisualItem.HIGHLIGHT, ColorLib.rgb(0,200,125));
 			//datacolour action is used to selectively add while colouraction is used to all
 			//int hops = 30;
@@ -101,20 +103,24 @@ public class Visualize {
 			color.add(nodeColour);
 			//color.add(new ColorAction("graph.nodes", VisualItem.FIXED, ColorLib.rgb(0,0,0)));
 			//color.add(new ColorAction("graph.nodes", VisualItem.HIGHLIGHT, ColorLib.rgb(5,0,0)));
-			//color.add(edgecolor);
+			color.add(edgecolor);
 			//	color.add(text);
 			color.add(shape);
 			color.add(new RepaintAction());
 //			color.add(filter);
-		        color.add(new ColorAction("graph.edges", VisualItem.FILLCOLOR, ColorLib.gray(200)));
-		        color.add(new ColorAction("graph.edges", VisualItem.STROKECOLOR, ColorLib.gray(200)));
+		        //color.add(new ColorAction("graph.edges", VisualItem.FILLCOLOR, ColorLib.gray(200)));
+		        //color.add(new ColorAction("graph.edges", VisualItem.STROKECOLOR, ColorLib.gray(200)));
 
 
 			ActionList layout = new ActionList(Activity.INFINITY);
 			//this actionlist will run indefinitely
 			//Force DIrected Layout
 			layout.add(nodeColour);
-			layout.add(new ForceDirectedLayout("graph"));
+			//layout.add(new FruchtermanReingoldLayout("graph"));
+			//layout.add(new CircleLayout("graph"));
+			ForceDirectedLayout fdl=new ForceDirectedLayout("graph");
+			fdl.setMaxTimeStep(100L);
+			layout.add(fdl);
 			layout.add(new RepaintAction());
 			//layout.add(filter);
 
@@ -133,7 +139,7 @@ public class Visualize {
 
 			Display d = new Display(vis); // so display is bigger than visualization
 			int width=1200, height=800;
-			d.setBackground(Color.WHITE);
+			d.setBackground(Color.GRAY);
 			d.setSize(width,height);
 			d.pan(width/2.0, height/2.0);
 			d.addControlListener(new DragControl());
