@@ -30,9 +30,13 @@ import prefuse.visual.VisualItem;
 
 /**
  * @author PAKV
+ * This class mainly coordinated the flow of the execution . It calls various other classes with relevant parameters
  */
+
+
 public class Main {
 	
+	// Buffered Writers for writing analysis data
 	static BufferedWriter out1;
 	static BufferedWriter out2;
 	static BufferedWriter out3;
@@ -40,6 +44,9 @@ public class Main {
 	
 
 	public static void main(String[] args) throws IOException {
+		
+		//args should contain the filename ie polbooks.gml or polblogs.gml
+		
 		File f1 = new File("data/output/ratio.txt");
 		File f2 = new File("data/output/triads.txt");
 		File f3 = new File("data/output/difftriads.txt");
@@ -62,6 +69,7 @@ public class Main {
 		Graph graphToVisualize;
 		graphToVisualize = new Graph();
 		try{
+			// The filename is passed to the GraphParser class which will parse and return a Graph structure of the data
 			graphToVisualize =  GraphParser.loadGraph(args[0]);	
 		}
 		catch(Exception ex ){
@@ -69,8 +77,11 @@ public class Main {
 			ex.printStackTrace();
 			System.exit(1);
 		}
-		
+		// Analyse class is used for the analysis part , ie calculating triadsRatio , edgeratio etc , and 
+		//generating random graphs 
 		Analyse an = new Analyse();
+		//evaluate funuction of the Analyse class takes as input a Graph and computed various analysis ratios which 
+		// are written to files 
 		an.evaluate(graphToVisualize);
 		int node_count1 = graphToVisualize.getNodeCount();
 		double denom1 = (node_count1*(node_count1  - 1))/2.0;
@@ -84,6 +95,7 @@ public class Main {
 		
 		
 		try {
+			//Following block is for calculating edge ratio , triads ratio etc on 30 random graphs
 		Graph g = new Graph();
 		for(int i = 0;i < 30; i++){
 			g = GraphParser.loadGraph(args[0]);
@@ -91,6 +103,7 @@ public class Main {
 			an.difftriads = 0;
 			an.sameedges = 0;
 			an.triads = 0;
+			//makerandomGraph takes the given graph in the file and creates a new random graph by changing the edges
 			g = an.makeRandomGraph(g);
 			an.evaluate(g);
 			int node_count2 = g.getNodeCount();
@@ -103,6 +116,8 @@ public class Main {
 			out4.write(cluster_ratio + "\n");
 			
 		}
+		//Visualize class takes a Graph as input and creates a frame showing the visualizatio of the graph 
+		//gd2 is for displaying a random graph to compare with the given graph
 		Visualize gd2 = new Visualize(g);
 		} catch (DataIOException e) {
 			System.out.println("Error Reading From File "+args[0]);
@@ -114,6 +129,7 @@ public class Main {
 		out3.close();
 		out4.close();
 		
+		//visualize the given graph
 		Visualize gd = new Visualize(graphToVisualize);
 
 	}

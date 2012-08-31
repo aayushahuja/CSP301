@@ -8,7 +8,10 @@ import prefuse.visual.EdgeItem;
 import prefuse.visual.NodeItem;
 import prefuse.visual.VisualItem;
 
+//This class is used for displaying information in a popup when the user clicks on an edge or node of the 
+//visualization
 public class CustomControl extends ControlAdapter implements Control {
+	
 	    public  void itemClicked(VisualItem item, MouseEvent e)
 	    {
 	        if(item instanceof NodeItem)

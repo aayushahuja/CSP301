@@ -13,7 +13,6 @@ import prefuse.data.Node;
 public class Analyse {
 	double sameedges = 0.0;
 	double crossedges = 0.0;
-	//int totalnodes =0;
 	boolean random ;
 	int triads = 0;
 	int difftriads = 0;
@@ -28,6 +27,7 @@ public class Analyse {
 		return Integer.toString(triads/3);
 		
 	}
+	//evaluate computes sameedges , crossedges , triads and difftriads
 	public void evaluate(Graph graph){
 		Iterator<Edge> i0 = graph.edges();
 		while(i0.hasNext()){
@@ -66,7 +66,8 @@ public class Analyse {
 		}
 
 	}
-	
+	//makeRandomGraph iterates over the edges of the given graph , deletes the existing and adds a new between
+	//two randomly selected nodes.
 	public Graph makeRandomGraph(Graph g) {
 		Graph result = g;
 		Iterator<Edge> it = result.edges();
@@ -75,15 +76,16 @@ public class Analyse {
 		Edge e1;
 		while(it.hasNext()) {
 			Edge e = it.next();
+			//randomly generate the source and target node of the new edge to be formed 
 			source = (int)(Math.random()*g.getNodeCount());
 			target = (int)(Math.random()*g.getNodeCount());
+			//remove the existing edge
 			result.removeEdge(e);
 			
-			//System.out.println(a);
-			//System.out.println(b);
-			
+			//add the new edge
 			e1 = result.getEdge(result.addEdge(source,target));
 			if (result.getNode(source).get("value").equals(result.getNode(target).get("value"))){
+				//set type of the edge using the value field of source and target nodes
 				e1.set("type", "same");
 			}
 			else{
